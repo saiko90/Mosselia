@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { AnimationProvider } from "@/components/providers/AnimationProvider";
+import { CartHydration } from "@/components/providers/CartHydration";
 import { VirtualJungle } from "@/components/3d/VirtualJungle";
 import { routing, type Locale } from "@/i18n/routing";
 import "../globals.css";
@@ -86,6 +87,13 @@ export default async function LocaleLayout({
       <body className="min-h-full flex flex-col text-moss-forest">
         {/* Canvas 3D persistant — z-index:-1, ne capte aucun événement */}
         <VirtualJungle />
+
+        {/*
+         * Réhydratation du panier Zustand.
+         * S'exécute dans useEffect → après validation hydratation React → zéro mismatch.
+         * Voir src/store/useCartStore.ts pour l'explication complète de la stratégie.
+         */}
+        <CartHydration />
 
         <AnimationProvider>
           <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
