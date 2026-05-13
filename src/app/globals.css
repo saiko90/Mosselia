@@ -1,26 +1,97 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ─── Dark mode : class strategy ────────────────────────────────────────────
+   Toujours dark. Ajouter class="dark" sur <html>.
+   Les variantes dark: répondent à .dark sur n'importe quel ancêtre.
+───────────────────────────────────────────────────────────────────────────── */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ─── Brand tokens ──────────────────────────────────────────────────────────
+   Génère les classes utilitaires Tailwind :
+   bg-moss-black, text-moss-electric, border-moss-gold, etc.
+───────────────────────────────────────────────────────────────────────────── */
+@theme {
+  --color-moss-black: #050505;
+  --color-moss-grey: #1a1a1a;
+  --color-moss-grey-mid: #2a2a2a;
+  --color-moss-electric: #00ff66;
+  --color-moss-electric-dim: #00cc52;
+  --color-moss-gold: #c9a96e;
+  --color-moss-gold-muted: #9a7a4a;
+  --color-moss-white: #f0f0f0;
+  --color-moss-white-dim: #a0a0a0;
 }
 
+/* ─── Semantic tokens (inline → valeurs résolues dans les utilitaires) ───── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--color-moss-black);
+  --color-foreground: var(--color-moss-white);
+  --color-surface: var(--color-moss-grey);
+  --color-accent: var(--color-moss-electric);
+  --color-premium: var(--color-moss-gold);
+
+  /* ── Typographie ── */
+  --font-sans: var(--font-geist-sans), "Helvetica Now", Helvetica Neue, Arial, sans-serif;
+  --font-serif: var(--font-playfair, "Playfair Display"), "Times New Roman", Georgia, serif;
+  --font-mono: var(--font-geist-mono), "JetBrains Mono", Consolas, monospace;
+
+  /* ── Animations ── */
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
+
+  /* ── Z-index scale ── */
+  --z-modal: 100;
+  --z-overlay: 90;
+  --z-header: 80;
+  --z-tooltip: 70;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Base ──────────────────────────────────────────────────────────────────
+   Le site est cliniquement sombre. Pas de mode clair.
+───────────────────────────────────────────────────────────────────────────── */
+:root {
+  color-scheme: dark;
+}
+
+html {
+  background-color: #050505;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #050505;
+  color: #f0f0f0;
+  font-family: var(--font-sans);
+}
+
+/* ─── Sélection ─────────────────────────────────────────────────────────── */
+::selection {
+  background-color: rgb(0 255 102 / 0.15);
+  color: #00ff66;
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c9a96e;
+  transition: background 0.3s;
+}
+
+/* ─── Focus ─────────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 1px solid #00ff66;
+  outline-offset: 3px;
 }
