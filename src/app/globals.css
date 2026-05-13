@@ -1,46 +1,61 @@
 @import "tailwindcss";
 
-/* ─── Dark mode : class strategy ────────────────────────────────────────────
-   Toujours dark. Ajouter class="dark" sur <html>.
-   Les variantes dark: répondent à .dark sur n'importe quel ancêtre.
+/* ─── Dark mode : infrastructure conservée pour usage futur ─────────────────
+   Le thème actuel est lumineux (organique/herbier).
+   La classe .dark reste disponible pour un éventuel mode sombre opt-in.
 ───────────────────────────────────────────────────────────────────────────── */
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ─── Brand tokens ──────────────────────────────────────────────────────────
+   Palette herbier XIXe — papier chaud, verts botaniques, accents organiques.
    Génère les classes utilitaires Tailwind :
-   bg-moss-black, text-moss-electric, border-moss-gold, etc.
+   bg-moss-paper, text-moss-forest, border-moss-accent, etc.
 ───────────────────────────────────────────────────────────────────────────── */
 @theme {
-  --color-moss-black: #050505;
-  --color-moss-grey: #1a1a1a;
-  --color-moss-grey-mid: #2a2a2a;
-  --color-moss-electric: #00ff66;
-  --color-moss-electric-dim: #00cc52;
+  /* Fonds */
+  --color-moss-paper: #f5f2eb;
+  --color-moss-surface: #eae5d9;
+  --color-moss-surface-deep: #ddd8cc;
+
+  /* Verts botaniques */
+  --color-moss-forest: #1a3326;
+  --color-moss-forest-mid: #2d5040;
+  --color-moss-forest-light: #3d6b55;
+  --color-moss-accent: #7a9b76;
+  --color-moss-accent-dim: #5e7d5a;
+
+  /* Accents organiques */
+  --color-moss-rose: #a67c75;
+  --color-moss-rose-dim: #8a5f59;
   --color-moss-gold: #c9a96e;
-  --color-moss-gold-muted: #9a7a4a;
-  --color-moss-white: #f0f0f0;
-  --color-moss-white-dim: #a0a0a0;
+  --color-moss-gold-dim: #a88a50;
+
+  /* Encre & neutres */
+  --color-moss-ink: #0f1f18;
+  --color-moss-fog: #f5f2eb;
 }
 
-/* ─── Semantic tokens (inline → valeurs résolues dans les utilitaires) ───── */
+/* ─── Semantic tokens (inline → résolus dans les utilitaires Tailwind) ────── */
 @theme inline {
-  --color-background: var(--color-moss-black);
-  --color-foreground: var(--color-moss-white);
-  --color-surface: var(--color-moss-grey);
-  --color-accent: var(--color-moss-electric);
+  --color-background: var(--color-moss-paper);
+  --color-foreground: var(--color-moss-forest);
+  --color-surface: var(--color-moss-surface);
+  --color-accent: var(--color-moss-accent);
   --color-premium: var(--color-moss-gold);
+  --color-cta: var(--color-moss-rose);
 
   /* ── Typographie ── */
   --font-sans: var(--font-geist-sans), "Helvetica Now", Helvetica Neue, Arial, sans-serif;
   --font-serif: var(--font-playfair, "Playfair Display"), "Times New Roman", Georgia, serif;
   --font-mono: var(--font-geist-mono), "JetBrains Mono", Consolas, monospace;
 
-  /* ── Animations ── */
+  /* ── Easing ── */
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
 
   /* ── Z-index scale ── */
+  --z-canvas: -1;
   --z-modal: 100;
   --z-overlay: 90;
   --z-header: 80;
@@ -48,29 +63,29 @@
 }
 
 /* ─── Base ──────────────────────────────────────────────────────────────────
-   Le site est cliniquement sombre. Pas de mode clair.
+   Thème lumineux par défaut. color-scheme: light pour les UI navigateur.
 ───────────────────────────────────────────────────────────────────────────── */
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html {
-  background-color: #050505;
+  background-color: #f5f2eb;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
 body {
-  background-color: #050505;
-  color: #f0f0f0;
+  background-color: transparent; /* Le canvas 3D est le vrai fond */
+  color: #1a3326;
   font-family: var(--font-sans);
 }
 
 /* ─── Sélection ─────────────────────────────────────────────────────────── */
 ::selection {
-  background-color: rgb(0 255 102 / 0.15);
-  color: #00ff66;
+  background-color: rgb(122 155 118 / 0.25);
+  color: #1a3326;
 }
 
 /* ─── Scrollbar ─────────────────────────────────────────────────────────── */
@@ -79,19 +94,19 @@ body {
   height: 3px;
 }
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: #eae5d9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2a2a2a;
+  background: #7a9b76;
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #c9a96e;
+  background: #1a3326;
   transition: background 0.3s;
 }
 
 /* ─── Focus ─────────────────────────────────────────────────────────────── */
 :focus-visible {
-  outline: 1px solid #00ff66;
+  outline: 1.5px solid #7a9b76;
   outline-offset: 3px;
 }

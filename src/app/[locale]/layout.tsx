@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { AnimationProvider } from "@/components/providers/AnimationProvider";
+import { VirtualJungle } from "@/components/3d/VirtualJungle";
 import { routing, type Locale } from "@/i18n/routing";
 import "../globals.css";
 
@@ -45,7 +46,7 @@ export async function generateMetadata({
     applicationName: "Mosselia",
     appleWebApp: {
       capable: true,
-      statusBarStyle: "black-translucent",
+      statusBarStyle: "default",
       title: "Mosselia",
     },
     formatDetection: { telephone: false },
@@ -55,7 +56,7 @@ export async function generateMetadata({
 }
 
 export const viewport: Viewport = {
-  themeColor: "#050505",
+  themeColor: "#f5f2eb",
   width: "device-width",
   initialScale: 1,
   minimumScale: 1,
@@ -80,9 +81,12 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`dark ${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-moss-black text-moss-white">
+      <body className="min-h-full flex flex-col text-moss-forest">
+        {/* Canvas 3D persistant — z-index:-1, ne capte aucun événement */}
+        <VirtualJungle />
+
         <AnimationProvider>
           <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
         </AnimationProvider>
